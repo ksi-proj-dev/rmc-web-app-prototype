@@ -1,0 +1,31 @@
+# 全体構成
+
+```mermaid
+graph LR
+
+A -- 1\. 認証キーでログイン --> B
+B -- 2\. 認証OKなら<br>プロファイル返却 --> A
+B -- ローカル操作 --> C
+A -- 3\. PDF送信 --> D
+D -- 4\. OCR結果JSONを返却 --> A
+A -- 5\. OCR結果JSONを送信 --> E
+E -- 6\. 解析・補正結果<br>(CSV)を返却 --> A
+A -- 7\. 解析・補正結果<br>(CSV)を送信 --> F[Pythonで補正]
+F -- 8\. パターン補正 --> A
+A -- 9\. CSVをExcelにまとめ保存 --> G[PC ローカルフォルダ]
+
+subgraph "Windows PC"
+    A[Windowsアプリ]
+end
+
+subgraph "管理サーバ（VPS）"
+    B[アプリ認証<br>プロファイル選択<br>（LLMモデル,APIキー）<br>----------------<br>初回/更新 アプリDL]
+    C[DB or JSON,TXTファイル]
+end
+
+subgraph "クラウドサービス"
+    D[AI OCR:<br>Azure/DX Suite]
+    E[LLM:<br>gpt4.1-mini<br>/gemini2.5Flash<br>/Claud3-haiku]
+end
+
+```
