@@ -1,0 +1,10 @@
+.env
+__pycache__
+build/
+dist/
+venv/
+.venv
+*.pyc
+*.pyo
+*.swp
+*.exe
